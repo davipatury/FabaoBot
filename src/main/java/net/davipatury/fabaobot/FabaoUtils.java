@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
@@ -69,5 +70,14 @@ public class FabaoUtils {
     public static void logToConsole(String text, String tag) {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 	System.out.println("[" + sdf.format(new Date()) + "] [Info] [" + tag + "]: " + text);
+    }
+    
+    public static String formatVersion(double version) {
+        DecimalFormat df = new DecimalFormat("0.0#");
+        return df.format(version).replace(",", ".");
+    }
+    
+    public static String formatVersion(String version) {
+        return formatVersion(Double.parseDouble(version));
     }
 }

@@ -27,7 +27,7 @@ public class EvalCommand extends Command {
             ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
 
             String script = 
-                "var imports = new JavaImporter(com.mashape.unirest.http.Unirest, java.net.URLEncoder, org.json.JSONObject);" +
+                "var imports = new JavaImporter(com.mashape.unirest.http.Unirest, java.net.URLEncoder, org.json.JSONObject, org.apache.commons.io.IOUtils);" +
                 "function execute() {\n" +
                 "  with (imports) {" +
                 "    "+word+"\n" +
