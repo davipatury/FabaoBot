@@ -45,7 +45,7 @@ public class FabaoUtils {
     }
     
     public static File createDirectory(String path) {
-        File dir = new File("data");
+        File dir = new File(path);
         if (!dir.exists()) {
             try{
                 dir.mkdir();
