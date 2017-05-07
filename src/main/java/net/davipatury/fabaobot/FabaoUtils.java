@@ -44,6 +44,16 @@ public class FabaoUtils {
         return bytesToString(fileToBytes(file));
     }
     
+    public static File createDirectory(String path) {
+        File dir = new File("data");
+        if (!dir.exists()) {
+            try{
+                dir.mkdir();
+            } catch(SecurityException se) {}        
+        }
+        return dir;
+    }
+    
     // arrayToString
     public static String arrayToString(String[] array) {
 	return arrayToString(array, 0, " ");

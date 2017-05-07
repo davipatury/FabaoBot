@@ -11,9 +11,10 @@ public class RestartCommand extends Command {
     
     @Override
     public void processCommand(final MessageReceivedEvent event, final String[] params, final FabaoBot bot) {
-        event.getChannel().sendMessage("Restarting...").queue();
-        bot.getJDA().shutdown(true);
-        System.exit(2);
+        event.getChannel().sendMessage("Restarting...").queue(msg -> {
+            bot.getJDA().shutdown(true);
+            System.exit(2);
+        });
     }
 	
     @Override

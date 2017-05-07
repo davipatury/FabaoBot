@@ -34,22 +34,11 @@ public class MessageListener extends ListenerAdapter {
             String commandName = fullCommand[0].toLowerCase();
             String[] parameters = Arrays.copyOfRange(fullCommand, 1, fullCommand.length);
             
-            CommandController bc = bot.getCommandController();
-            Command command = bc.getCommand(commandName, true);
+            CommandController commandController = bot.getCommandController();
+            Command command = commandController.getCommand(commandName, true);
             if(command != null) {
-                if(hasPermission(event, command)) {
-                    bc.processCommand(command, parameters, event);
-                }
+                commandController.processCommand(command, parameters, event);
             }
 	}
-    }
-    
-    private boolean hasPermission(MessageReceivedEvent event, Command command) {
-        Permission[] permissions = command.getPermissions();
-        if(permissions.length < 1) {
-            return true;
-        } else {
-            return event.getMember() != null && event.getMember().hasPermission(permissions);
-        }
     }
 }

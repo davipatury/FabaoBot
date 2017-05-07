@@ -36,15 +36,20 @@ public class CommandController {
     
     private final FabaoBot bot;
     private final List<Command> commandList;
+    private final PermissionController permissionController;
     
     public CommandController(FabaoBot bot) {
         this.bot = bot;
         commandList = Arrays.asList(CommandGenerator.generateDefaultCommands(bot));
+        
+        permissionController = new PermissionController(this);
     }
     
     public CommandController(FabaoBot bot, Command... initialCommands) {
         this.bot = bot;
         commandList = Arrays.asList(initialCommands);
+        
+        permissionController = new PermissionController(this);
     }
     
     public boolean hasCommand(String commandName, boolean checkForAliases) {
@@ -78,7 +83,13 @@ public class CommandController {
     }
     
     public void processCommand(Command command, String[] parameters, MessageReceivedEvent event) {
-        bot.getStatistics().increaseCommandsInSession(1);
-        command.processCommand(event, parameters, bot);
+        if(permissionController.canUseCommand(event, command)) {
+            bot.getStatistics().increaseCommandsInSession(1);
+            command.processCommand(event, parameters, bot);
+        }
+    }
+    
+    public PermissionController getPermissionController() {
+        return permissionController;
     }
 }

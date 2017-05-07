@@ -37,7 +37,7 @@ public class Configuration {
                             .accumulate("prefix", "!")
                             .accumulate("owner_id", "135152303773712384")
                         ).accumulate("memes", new JSONObject()
-                            .accumulate("memes_path", "memes.json")
+                            .accumulate("memes_path", "data/memes.json")
                             .accumulate("pastebin_key", "1234567890")
                         );
                     
@@ -59,11 +59,10 @@ public class Configuration {
     }
     
     private void load() throws IOException {
-        JSONTokener jsonTokener = new JSONTokener(new FileReader(path));
-        json = new JSONObject(jsonTokener);
+        json = new JSONObject(new JSONTokener(new FileReader(path)));
     }
     
-    private void save() {
+    public void save() {
         try (FileWriter writer = new FileWriter(path)) {
             writer.write(json.toString(4));
         } catch (FileNotFoundException | UnsupportedEncodingException ex1) {

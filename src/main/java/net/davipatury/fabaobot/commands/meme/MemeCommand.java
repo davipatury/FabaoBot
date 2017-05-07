@@ -59,6 +59,7 @@ public class MemeCommand extends Command {
             }
             
             channel.sendMessage(ebuilder.build()).queue();
+            bot.getStatistics().increaseRequestedMemes(1);
         }
     }
 	

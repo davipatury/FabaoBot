@@ -27,6 +27,9 @@ public class FabaoBot {
     public FabaoBot(JDA jda, Configuration configuration) {
         this.jda = jda;
         this.configuration = configuration;
+        
+        FabaoUtils.createDirectory("data");
+        
         commandController = new CommandController(this);
         memeController = new MemeController(this, true);
         statistics = new Statistics();

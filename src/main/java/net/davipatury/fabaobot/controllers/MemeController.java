@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import net.davipatury.fabaobot.FabaoBot;
+import net.davipatury.fabaobot.FabaoUtils;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -33,6 +34,7 @@ public class MemeController {
                 load();
             } catch (IOException ex) {
                 if(createIfDoesntExists) {
+                    FabaoUtils.createDirectory("data");
                     try (FileWriter writer = new FileWriter(path)) {
                         JSONObject newMemes = new JSONObject()
                             .accumulate("memes", new JSONObject());
@@ -50,8 +52,7 @@ public class MemeController {
     }
     
     private void load() throws IOException {
-        JSONTokener jsonTokener = new JSONTokener(new FileReader(path));
-        json = new JSONObject(jsonTokener);
+        json = new JSONObject(new JSONTokener(new FileReader(path)));
     }
     
     public void save() {
