@@ -5,6 +5,7 @@
  */
 package net.davipatury.fabaobot;
 
+import java.awt.Color;
 import net.davipatury.fabaobot.controllers.*;
 import net.davipatury.fabaobot.listeners.MessageListener;
 import net.dv8tion.jda.core.JDA;
@@ -14,6 +15,8 @@ import net.dv8tion.jda.core.JDA;
  * @author Davi
  */
 public class FabaoBot {
+    
+    public static Color DEFAULT_COLOR = new Color(85, 43, 119);
     
     private final JDA jda;
     private final MemeController memeController;

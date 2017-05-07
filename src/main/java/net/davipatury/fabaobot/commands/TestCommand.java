@@ -27,9 +27,7 @@ public class TestCommand extends Command {
                 MemeController memeController = bot.getMemeController();
                 oldMemes.keySet().stream().forEach(key -> {
                     JSONObject newMeme = new JSONObject()
-                            .accumulate("base64", oldMemes.getString(key))
-                            .accumulate("author_id", JSONObject.NULL)
-                            .accumulate("added_date", JSONObject.NULL);
+                            .accumulate("base64", oldMemes.getString(key));
                     memeController.addMeme(key, newMeme);
                 });
                 memeController.save();

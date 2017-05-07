@@ -21,7 +21,7 @@ import org.json.JSONTokener;
 public class Configuration {
     
     private JSONObject json;
-    private String path;
+    private final String path;
     
     public Configuration(String path, boolean createIfDoesntExists, boolean quitIfDoesntExists) {
         this.path = path;
@@ -33,11 +33,12 @@ public class Configuration {
                 try (FileWriter writer = new FileWriter(path)) {
                     JSONObject newConfig = new JSONObject()
                         .accumulate("bot", new JSONObject()
-                            .accumulate("bot_token", "123456789")
+                            .accumulate("bot_token", "1234567890")
                             .accumulate("prefix", "!")
                             .accumulate("owner_id", "135152303773712384")
                         ).accumulate("memes", new JSONObject()
                             .accumulate("memes_path", "memes.json")
+                            .accumulate("pastebin_key", "1234567890")
                         );
                     
                     writer.write(newConfig.toString(4));

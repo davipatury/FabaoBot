@@ -5,6 +5,7 @@
  */
 package net.davipatury.fabaobot;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,6 +15,10 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.exceptions.PermissionException;
 
 /**
  *
@@ -72,6 +77,7 @@ public class FabaoUtils {
 	System.out.println("[" + sdf.format(new Date()) + "] [Info] [" + tag + "]: " + text);
     }
     
+    // Version formatting
     public static String formatVersion(double version) {
         DecimalFormat df = new DecimalFormat("0.0#");
         return df.format(version).replace(",", ".");
@@ -79,5 +85,26 @@ public class FabaoUtils {
     
     public static String formatVersion(String version) {
         return formatVersion(Double.parseDouble(version));
+    }
+    
+    // Embed helpers
+    public static Color getColor(Guild guild) {
+        if(guild != null) {
+            return guild.getSelfMember().getColor();
+        }
+        return FabaoBot.DEFAULT_COLOR;
+    }
+    
+    public static String formatUsername(User user) {
+        return user.getName() + "#" + user.getDiscriminator();
+    }
+    
+    // Misc
+    public static void safeDeleteMessage(Message message) {
+        try {
+            message.delete().queue();
+        } catch (PermissionException e) {
+            logToConsole("Permission exception caught on message deletion. Missing permission: " + e.getPermission().getName());
+        }
     }
 }

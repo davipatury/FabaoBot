@@ -40,9 +40,11 @@ public class UpdateCommand extends Command {
             Message message = event.getChannel().sendMessage(versionInfo.toString()).complete();
                 
             if(newestVersion > currentVersion) {
+                message.editMessage(versionInfo.delete(versionInfo.length() - 23, versionInfo.length()) + "Downloading...").queue();
                 File newJar = new File("FabaoBot-updated.jar");
                 FileUtils.copyURLToFile(new URL("https://github.com/davipatury/FabaoBot/releases/download/v"+FabaoUtils.formatVersion(newestVersion)+"/FabaoBot.jar"), newJar);
                 message.editMessage(versionInfo.delete(versionInfo.length() - 23, versionInfo.length()) + "Restarting!").queue();
+                bot.getJDA().shutdown(true);
                 System.exit(2);
             } else {
                 message.editMessage(versionInfo.delete(versionInfo.length() - 23, versionInfo.length()) + "You are using an updated version!").queue();
@@ -63,7 +65,7 @@ public class UpdateCommand extends Command {
 	
     @Override
     public String[] getAliases() {
-        return new String[]{"atualizar"};
+        return new String[]{};
     }
 
     @Override

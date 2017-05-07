@@ -4,7 +4,6 @@ import java.util.Arrays;
 import net.davipatury.fabaobot.commands.Command;
 import net.davipatury.fabaobot.FabaoBot;
 import net.davipatury.fabaobot.controllers.CommandController;
-import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -16,7 +15,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
  */
 public class MessageListener extends ListenerAdapter {
     
-    private FabaoBot bot;
+    private final FabaoBot bot;
     
     public MessageListener(FabaoBot bot) {
         this.bot = bot;
@@ -30,13 +29,14 @@ public class MessageListener extends ListenerAdapter {
         String prefix = bot.getConfiguration().getCategory("bot").getString("prefix");
         
         if (message.getContent().startsWith(prefix) && message.getContent().length() >= 1 && !message.getAuthor().isBot()) {
-            String commandName = message.getContent().substring(prefix.length()).split("\\s")[0].toLowerCase();
-            String[] parameters = message.getContent().substring(prefix.length() + commandName.length()).split("\\s");
+            String[] fullCommand = message.getContent().substring(prefix.length()).split("\\s");
+            String commandName = fullCommand[0].toLowerCase();
+            String[] parameters = Arrays.copyOfRange(fullCommand, 1, fullCommand.length);
             
             CommandController bc = bot.getCommandController();
             Command command = bc.getCommand(commandName, true);
             if(command != null) {
-                if(!event.isFromType(ChannelType.GROUP) || command.getPermissions().length > 0 || event.getMember().hasPermission(command.getPermissions())) {
+                if(!event.isFromType(ChannelType.GROUP) || command.getPermissions().length < 1 || event.getMember().hasPermission(command.getPermissions())) {
                     bc.processCommand(command, parameters, event);
                 }
             }

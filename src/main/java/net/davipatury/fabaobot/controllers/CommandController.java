@@ -11,6 +11,7 @@ import java.util.NoSuchElementException;
 import net.davipatury.fabaobot.commands.Command;
 import net.davipatury.fabaobot.FabaoBot;
 import net.davipatury.fabaobot.commands.*;
+import net.davipatury.fabaobot.commands.meme.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 /**
@@ -24,13 +25,17 @@ public class CommandController {
             return new Command[]{
                 new EvalCommand(),
                 new TestCommand(),
-                new UpdateCommand()
+                new UpdateCommand(),
+                new RestartCommand(),
+                new MemeCommand(),
+                new AddMemeCommand(),
+                new RemoveMemeCommand()
             };
         }
     }
     
-    private FabaoBot bot;
-    private List<Command> commandList;
+    private final FabaoBot bot;
+    private final List<Command> commandList;
     
     public CommandController(FabaoBot bot) {
         this.bot = bot;

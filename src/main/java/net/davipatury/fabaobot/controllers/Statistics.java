@@ -8,13 +8,18 @@ public class Statistics {
     
     private int messagesInSession = 0;
     private int commandsInSession = 0;
+    private int requestedMemes = 0;
     
     public void increaseMessagesInSession(int increaseBy) {
-        messagesInSession += 1;
+        messagesInSession += increaseBy;
     }
     
     public void increaseCommandsInSession(int increaseBy) {
-        commandsInSession += 1;
+        commandsInSession += increaseBy;
+    }
+    
+    public void increaseRequestedMemes(int increaseBy) {
+        requestedMemes += increaseBy;
     }
     
     public int messagesInSession() {
@@ -23,5 +28,9 @@ public class Statistics {
     
     public int commandsInSession() {
         return commandsInSession;
+    }
+    
+    public int requestedMemes() {
+        return requestedMemes;
     }
 }

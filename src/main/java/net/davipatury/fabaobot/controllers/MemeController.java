@@ -10,9 +10,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.stream.Collectors;
 import net.davipatury.fabaobot.FabaoBot;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -24,8 +21,8 @@ import org.json.JSONTokener;
 public class MemeController {
     
     private JSONObject json;
-    private FabaoBot bot;
-    private String path;
+    private final FabaoBot bot;
+    private final String path;
     
     public MemeController(FabaoBot bot, boolean createIfDoesntExists) {
         this.bot = bot;
@@ -69,9 +66,11 @@ public class MemeController {
     }
     
     public JSONObject getMeme(String name) {
-        /*file = File.createTempFile(name, ".jpg");
-        FileUtils.writeByteArrayToFile(file, Base64.getDecoder().decode(meme.getString("base64")));*/
         return json.getJSONObject("memes").optJSONObject(name);
+    }
+    
+    public boolean hasMeme(String name) {
+        return json.getJSONObject("memes").has(name);
     }
     
     public void addMeme(String name, JSONObject newMeme) {
