@@ -88,13 +88,12 @@ public class PermissionController {
     // Conditional functions
     public boolean canUseCommand(MessageReceivedEvent event, Command command) {
         MessageChannel channel = event.getChannel();
-        boolean hasPermission = hasPermission(event, command);
-        if(!json.getBoolean("permissionIgnoreWhitelist") || !hasPermission) {
+        if(!json.getBoolean("permissionIgnoreWhitelist") || !(event.getMember() != null && event.getMember().hasPermission(Permission.ADMINISTRATOR))) {
             if(!whitelistedChannel(channel, command) || blacklistedChannel(channel, command)) {
                 return false;
             }
         }
-        return hasPermission;
+        return hasPermission(event, command);
     }
     
     public boolean whitelistedChannel(MessageChannel channel, Command command) {
