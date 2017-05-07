@@ -45,7 +45,7 @@ public class UpdateCommand extends Command {
                 FileUtils.copyURLToFile(new URL("https://github.com/davipatury/FabaoBot/releases/download/v"+FabaoUtils.formatVersion(newestVersion)+"/FabaoBot.jar"), newJar);
                 message.editMessage(versionInfo.delete(versionInfo.length() - 23, versionInfo.length()) + "Restarting!").queue();
                 bot.getJDA().shutdown(true);
-                System.exit(2);
+                System.exit(3);
             } else {
                 message.editMessage(versionInfo.delete(versionInfo.length() - 23, versionInfo.length()) + "You are using an updated version!").queue();
             }

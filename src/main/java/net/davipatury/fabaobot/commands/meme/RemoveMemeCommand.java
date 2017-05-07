@@ -8,7 +8,6 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import org.json.JSONObject;
 
 /**
  *
@@ -18,14 +17,14 @@ public class RemoveMemeCommand extends Command {
     
     @Override
     public void processCommand(final MessageReceivedEvent event, final String[] params, final FabaoBot bot) {
-        final String word = FabaoUtils.arrayToString(params);
+        final String word = FabaoUtils.arrayToString(params).toLowerCase();
         final MemeController memeController = bot.getMemeController();
         final EmbedBuilder ebuilder = new EmbedBuilder();
 				
-        if(memeController.hasMeme(word.toLowerCase())) {
+        if(memeController.hasMeme(word)) {
             final Message message = event.getMessage();
             
-            memeController.getMemeList().remove(word.toLowerCase());
+            memeController.removeMeme(word);
             memeController.save();
             
             ebuilder.setColor(FabaoUtils.getColor(event.getGuild()));

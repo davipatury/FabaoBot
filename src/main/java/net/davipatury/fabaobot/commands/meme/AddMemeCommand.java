@@ -24,11 +24,11 @@ public class AddMemeCommand extends Command {
     @Override
     public void processCommand(final MessageReceivedEvent event, final String[] params, final FabaoBot bot) {
         String possibleUrl = params[0];
-        final String word = FabaoUtils.arrayToString(params, 1);
+        final String word = FabaoUtils.arrayToString(params, 1).toLowerCase();
         final MemeController memeController = bot.getMemeController();
         final EmbedBuilder ebuilder = new EmbedBuilder();
 				
-        if(!memeController.hasMeme(word.toLowerCase())) {
+        if(!memeController.hasMeme(word)) {
             final Message message = event.getMessage();
             
             String base64 = urlToBase64(possibleUrl);

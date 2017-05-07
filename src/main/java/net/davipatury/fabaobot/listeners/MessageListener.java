@@ -4,6 +4,7 @@ import java.util.Arrays;
 import net.davipatury.fabaobot.commands.Command;
 import net.davipatury.fabaobot.FabaoBot;
 import net.davipatury.fabaobot.controllers.CommandController;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -36,10 +37,19 @@ public class MessageListener extends ListenerAdapter {
             CommandController bc = bot.getCommandController();
             Command command = bc.getCommand(commandName, true);
             if(command != null) {
-                if(!event.isFromType(ChannelType.GROUP) || command.getPermissions().length < 1 || event.getMember().hasPermission(command.getPermissions())) {
+                if(hasPermission(event, command)) {
                     bc.processCommand(command, parameters, event);
                 }
             }
 	}
+    }
+    
+    private boolean hasPermission(MessageReceivedEvent event, Command command) {
+        Permission[] permissions = command.getPermissions();
+        if(permissions.length < 1) {
+            return true;
+        } else {
+            return event.getMember() != null && event.getMember().hasPermission(permissions);
+        }
     }
 }
