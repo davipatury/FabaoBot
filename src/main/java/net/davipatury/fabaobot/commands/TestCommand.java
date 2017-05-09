@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import net.davipatury.fabaobot.FabaoBot;
 import net.davipatury.fabaobot.controllers.MemeController;
+import net.davipatury.fabaobot.modules.Module;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.json.JSONObject;
@@ -17,6 +18,10 @@ import org.json.JSONObject;
  * @author Davi
  */
 public class TestCommand extends Command {
+
+    public TestCommand(Module module) {
+        super(module);
+    }
     
     @Override
     public void processCommand(final MessageReceivedEvent event, final String[] params, final FabaoBot bot) {

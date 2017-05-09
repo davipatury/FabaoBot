@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import net.davipatury.fabaobot.FabaoUtils;
 import net.davipatury.fabaobot.commands.Command;
+import net.davipatury.fabaobot.modules.Module;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -42,7 +43,7 @@ public class PermissionController {
             try (FileWriter writer = new FileWriter(path)) {
                 JSONObject newMemes = new JSONObject()
                     .accumulate("permissionIgnoreWhitelist", true)
-                    .accumulate("commands", new JSONObject());
+                    .accumulate("modules", new JSONObject());
                    
                 writer.write(newMemes.toString(4));
             } catch (FileNotFoundException | UnsupportedEncodingException ex1) {
@@ -61,13 +62,31 @@ public class PermissionController {
     }
     
     private void populateJson() {
-        commandController.commandList().forEach(command -> {
-            if(!json.getJSONObject("commands").has(command.getName().toLowerCase())) {
-                json.getJSONObject("commands").accumulate(command.getName().toLowerCase(), new JSONObject()
-                    .put("permissions", new JSONArray(Arrays.asList(command.getPermissions()).stream().map(permission -> permission.toString()).collect(Collectors.toList())))
+        commandController.moduleList().forEach(module -> {
+            if(getModulesPermissions().has(module.getName().toLowerCase())) {
+                Arrays.asList(module.getCommands()).forEach(command -> {
+                    if(!getModulesPermissions().getJSONObject(module.getName().toLowerCase()).getJSONObject("commands").has(command.getName().toLowerCase())) {
+                        getModulesPermissions().getJSONObject(module.getName().toLowerCase()).getJSONObject("commands").accumulate(command.getName().toLowerCase(), new JSONObject()
+                            .put("permissions", new JSONArray(Arrays.asList(command.getPermissions()).stream().map(permission -> permission.toString()).collect(Collectors.toList())))
+                            .put("whitelist_channels", new JSONArray())
+                            .put("blacklist_channels", new JSONArray())
+                        );
+                    }
+                });
+            } else {
+                getModulesPermissions().accumulate(module.getName().toLowerCase(), new JSONObject()
                     .put("whitelist_channels", new JSONArray())
                     .put("blacklist_channels", new JSONArray())
+                    .put("commands", new JSONObject())
                 );
+                
+                Arrays.asList(module.getCommands()).forEach(command -> {
+                    getModulesPermissions().getJSONObject(module.getName().toLowerCase()).getJSONObject("commands").accumulate(command.getName().toLowerCase(), new JSONObject()
+                        .put("permissions", new JSONArray(Arrays.asList(command.getPermissions()).stream().map(permission -> permission.toString()).collect(Collectors.toList())))
+                        .put("whitelist_channels", new JSONArray())
+                        .put("blacklist_channels", new JSONArray())
+                    );
+                });
             }
         });
         
@@ -81,23 +100,37 @@ public class PermissionController {
         } catch (IOException ex) {}
     }
     
-    public JSONObject getCommandsPermissions() {
-        return json.getJSONObject("commands");
+    public JSONObject getModulesPermissions() {
+        return json.getJSONObject("modules");
+    }
+    
+    public JSONObject getModuleCommands(Module module) {
+        return getModulesPermissions().getJSONObject(module.getName().toLowerCase()).getJSONObject("commands");
+    }
+    
+    public JSONObject getPermissions(Command command) {
+        return getModuleCommands(command.getModule()).getJSONObject(command.getName().toLowerCase());
     }
     
     // Conditional functions
     public boolean canUseCommand(MessageReceivedEvent event, Command command) {
         MessageChannel channel = event.getChannel();
         if(!json.getBoolean("permissionIgnoreWhitelist") || !(event.getMember() != null && event.getMember().hasPermission(Permission.ADMINISTRATOR))) {
-            if(!whitelistedChannel(channel, command) || blacklistedChannel(channel, command)) {
+            if(!moduleWhitelistedChannel(channel, command.getModule()) || moduleBlacklistedChannel(channel, command.getModule())) {
+                return false;
+            }
+        }
+        if(!json.getBoolean("permissionIgnoreWhitelist") || !(event.getMember() != null && event.getMember().hasPermission(Permission.ADMINISTRATOR))) {
+            if(!commandWhitelistedChannel(channel, command) || commandBlacklistedChannel(channel, command)) {
                 return false;
             }
         }
         return hasPermission(event, command);
     }
     
-    public boolean whitelistedChannel(MessageChannel channel, Command command) {
-        JSONObject cmd = json.getJSONObject("commands").getJSONObject(command.getName().toLowerCase());
+    // Module whitelisting
+    public boolean moduleWhitelistedChannel(MessageChannel channel, Module module) {
+        JSONObject cmd = getModulesPermissions().getJSONObject(module.getName().toLowerCase());
         JSONArray whitelistChannels = cmd.getJSONArray("whitelist_channels");
         if(!channel.getType().isGuild() || whitelistChannels.length() < 1) {
             return true;
@@ -105,8 +138,27 @@ public class PermissionController {
         return whitelistChannels.toList().contains(channel.getId());
     }
     
-    public boolean blacklistedChannel(MessageChannel channel, Command command) {
-        JSONObject cmd = json.getJSONObject("commands").getJSONObject(command.getName().toLowerCase());
+    public boolean moduleBlacklistedChannel(MessageChannel channel, Module module) {
+        JSONObject cmd = getModulesPermissions().getJSONObject(module.getName().toLowerCase());
+        JSONArray blacklistChannels = cmd.getJSONArray("blacklist_channels");
+        if(!channel.getType().isGuild() || blacklistChannels.length() < 1) {
+            return false;
+        }
+        return blacklistChannels.toList().contains(channel.getId());
+    }
+    
+    // Command whitelisting
+    public boolean commandWhitelistedChannel(MessageChannel channel, Command command) {
+        JSONObject cmd = getPermissions(command);
+        JSONArray whitelistChannels = cmd.getJSONArray("whitelist_channels");
+        if(!channel.getType().isGuild() || whitelistChannels.length() < 1) {
+            return true;
+        }
+        return whitelistChannels.toList().contains(channel.getId());
+    }
+    
+    public boolean commandBlacklistedChannel(MessageChannel channel, Command command) {
+        JSONObject cmd = getPermissions(command);
         JSONArray blacklistChannels = cmd.getJSONArray("blacklist_channels");
         if(!channel.getType().isGuild() || blacklistChannels.length() < 1) {
             return false;
@@ -115,7 +167,7 @@ public class PermissionController {
     }
     
     public boolean hasPermission(MessageReceivedEvent event, Command command) {
-        JSONObject cmd = json.getJSONObject("commands").getJSONObject(command.getName().toLowerCase());
+        JSONObject cmd = getPermissions(command);
         Collection<Permission> permissions = cmd.getJSONArray("permissions").toList().stream().map(Object::toString).map(Permission::valueOf).collect(Collectors.toList());
         if(permissions.size() < 1) {
             return true;

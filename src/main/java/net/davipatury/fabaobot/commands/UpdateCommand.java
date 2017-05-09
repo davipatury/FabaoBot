@@ -11,6 +11,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import net.davipatury.fabaobot.FabaoBot;
 import net.davipatury.fabaobot.FabaoUtils;
+import net.davipatury.fabaobot.modules.Module;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -24,6 +25,10 @@ import org.json.XML;
  * @author Davi
  */
 public class UpdateCommand extends Command {
+
+    public UpdateCommand(Module module) {
+        super(module);
+    }
     
     @Override
     public void processCommand(final MessageReceivedEvent event, final String[] params, final FabaoBot bot) {

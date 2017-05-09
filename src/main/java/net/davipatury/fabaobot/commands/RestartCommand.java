@@ -1,6 +1,7 @@
 package net.davipatury.fabaobot.commands;
 
 import net.davipatury.fabaobot.FabaoBot;
+import net.davipatury.fabaobot.modules.Module;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 /**
@@ -8,6 +9,10 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
  * @author Davi
  */
 public class RestartCommand extends Command {
+
+    public RestartCommand(Module module) {
+        super(module);
+    }
     
     @Override
     public void processCommand(final MessageReceivedEvent event, final String[] params, final FabaoBot bot) {

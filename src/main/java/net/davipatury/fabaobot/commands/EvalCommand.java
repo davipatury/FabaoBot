@@ -5,6 +5,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import net.davipatury.fabaobot.FabaoBot;
 import net.davipatury.fabaobot.FabaoUtils;
+import net.davipatury.fabaobot.modules.Module;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
@@ -15,6 +16,10 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
  * @author Davi
  */
 public class EvalCommand extends Command {
+
+    public EvalCommand(Module module) {
+        super(module);
+    }
     
     @Override
     public void processCommand(final MessageReceivedEvent event, final String[] params, final FabaoBot bot) {

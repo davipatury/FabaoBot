@@ -8,6 +8,7 @@ import net.davipatury.fabaobot.FabaoBot;
 import net.davipatury.fabaobot.FabaoUtils;
 import net.davipatury.fabaobot.commands.Command;
 import net.davipatury.fabaobot.controllers.MemeController;
+import net.davipatury.fabaobot.modules.Module;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
@@ -20,6 +21,10 @@ import org.json.JSONObject;
  * @author Davi
  */
 public class AddMemeCommand extends Command {
+
+    public AddMemeCommand(Module module) {
+        super(module);
+    }
     
     @Override
     public void processCommand(final MessageReceivedEvent event, final String[] params, final FabaoBot bot) {
