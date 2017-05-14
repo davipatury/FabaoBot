@@ -88,6 +88,12 @@ public class MemeCommand extends Command {
         return true;
     }
     
+    @Override
+    public void helpEmbed(EmbedBuilder ebuilder) {
+        ebuilder.addField("Descrição", "Mostra uma lista com todos os memes/Mostra um meme específico", false);
+        ebuilder.addField("Exemplo", "meme, meme <nome do meme>", false);
+    }
+    
     private HttpResponse<String> createPost(String content, String pastebin_key) {
         try {
             return Unirest.post("http://pastebin.com/api/api_post.php")

@@ -39,6 +39,9 @@ public class Configuration {
                         ).accumulate("memes", new JSONObject()
                             .accumulate("memes_path", "data/memes.json")
                             .accumulate("pastebin_key", "1234567890")
+                        ).accumulate("music", new JSONObject()
+                            .accumulate("youtube_api_key", "1234567890")
+                            .accumulate("twitch_client_id", "1234567890")
                         );
                     
                     writer.write(newConfig.toString(4));

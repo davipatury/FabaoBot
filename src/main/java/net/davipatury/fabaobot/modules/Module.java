@@ -24,10 +24,12 @@ public abstract class Module {
     public abstract String getName();
     public abstract Module generateCommands();
     
+    public JSONObject customizeOptions(JSONObject options) {
+        return null;
+    }
     public Command[] getCommands() {
         return commands;
     };
-    
     public JSONObject getConfiguration() {
         return commandController.getPermissionController().getModulesPermissions().getJSONObject(getName().toLowerCase());
     }

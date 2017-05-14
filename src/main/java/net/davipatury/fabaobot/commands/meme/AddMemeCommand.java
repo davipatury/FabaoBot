@@ -89,6 +89,12 @@ public class AddMemeCommand extends Command {
         return parameters.length >= 2;
     }
     
+    @Override
+    public void helpEmbed(EmbedBuilder ebuilder) {
+        ebuilder.addField("Descrição", "Adiciona um meme à lista de memes.", false);
+        ebuilder.addField("Exemplo", "addmeme <link> <nome do meme>", false);
+    }
+    
     private String urlToBase64(String fileUrl) {
         try {
             URL url = new URL(fileUrl);

@@ -1,11 +1,13 @@
-package net.davipatury.fabaobot.commands;
+package net.davipatury.fabaobot.commands.admin;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import net.davipatury.fabaobot.FabaoBot;
 import net.davipatury.fabaobot.FabaoUtils;
+import net.davipatury.fabaobot.commands.Command;
 import net.davipatury.fabaobot.modules.Module;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
@@ -91,4 +93,9 @@ public class EvalCommand extends Command {
         return (parameters.length >= 1);
     }
     
+    @Override
+    public void helpEmbed(EmbedBuilder ebuilder) {
+        ebuilder.addField("Descrição", "\"Roda\" uma expressão em Javascript. Usado para debugs.", false);
+        ebuilder.addField("Exemplo", "eval <expressão>", false);
+    }
 }

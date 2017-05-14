@@ -5,9 +5,12 @@
  */
 package net.davipatury.fabaobot;
 
+import net.davipatury.fabaobot.apis.twitch.TwitchAPI;
+import net.davipatury.fabaobot.apis.*;
 import java.awt.Color;
 import net.davipatury.fabaobot.controllers.*;
 import net.davipatury.fabaobot.listeners.MessageListener;
+import net.davipatury.fabaobot.player.PlayerController;
 import net.dv8tion.jda.core.JDA;
 
 /**
@@ -23,18 +26,34 @@ public class FabaoBot {
     private final Configuration configuration;
     private final Statistics statistics;
     private final CommandController commandController;
+    private final PlayerController playerController;
+    
+    private final YoutubeAPI youtubeApi;
+    private final TwitchAPI twitchApi;
     
     public FabaoBot(JDA jda, Configuration configuration) {
         this.jda = jda;
+        this.jda.addEventListener(new MessageListener(this));
         this.configuration = configuration;
         
         FabaoUtils.createDirectory("data");
         
-        commandController = new CommandController(this);
-        memeController = new MemeController(this, true);
-        statistics = new Statistics();
+        this.memeController = new MemeController(this, true);
+        this.statistics = new Statistics();
+        this.playerController = new PlayerController(this);
+        this.commandController = new CommandController(this);
         
-        jda.addEventListener(new MessageListener(this));
+        this.youtubeApi = new YoutubeAPI(configuration.getCategory("music").getString("youtube_api_key"));
+        this.twitchApi = new TwitchAPI(configuration.getCategory("music").getString("twitch_client_id"));
+    }
+    
+    public void shutdown() {
+        shutdown(0);
+    }
+    
+    public void shutdown(int exitCode) {
+        jda.shutdown(true);
+        System.exit(exitCode);
     }
     
     public JDA getJDA() {
@@ -55,5 +74,17 @@ public class FabaoBot {
     
     public MemeController getMemeController() {
         return memeController;
+    }
+    
+    public PlayerController getPlayerController() {
+        return playerController;
+    }
+    
+    public TwitchAPI getTwitchApi() {
+        return twitchApi;
+    }
+    
+    public YoutubeAPI getYoutubeApi() {
+        return youtubeApi;
     }
 }

@@ -65,4 +65,9 @@ public class RemoveMemeCommand extends Command {
         return parameters.length >= 1;
     }
     
+    @Override
+    public void helpEmbed(EmbedBuilder ebuilder) {
+        ebuilder.addField("Descrição", "Remove um meme da lista de memes.", false);
+        ebuilder.addField("Exemplo", "removememe <nome do meme>", false);
+    }
 }

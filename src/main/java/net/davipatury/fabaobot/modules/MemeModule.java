@@ -29,7 +29,8 @@ public class MemeModule extends Module {
         commands = new Command[]{
             new MemeCommand(this),
             new AddMemeCommand(this),
-            new RemoveMemeCommand(this)
+            new RemoveMemeCommand(this),
+            new RandomMemeCommand(this)
         };
         return this;
     }

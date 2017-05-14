@@ -5,7 +5,7 @@
  */
 package net.davipatury.fabaobot.modules;
 
-import net.davipatury.fabaobot.commands.admin.*;
+import net.davipatury.fabaobot.commands.misc.*;
 import net.davipatury.fabaobot.commands.Command;
 import net.davipatury.fabaobot.controllers.CommandController;
 
@@ -13,25 +13,27 @@ import net.davipatury.fabaobot.controllers.CommandController;
  *
  * @author Davi
  */
-public class AdminModule extends Module {
+public class MiscModule extends Module {
 
-    public AdminModule(CommandController commandController) {
+    public MiscModule(CommandController commandController) {
         super(commandController);
     }
 
     @Override
     public String getName() {
-        return "Admin";
+        return "Misc";
     }
 
     @Override
     public Module generateCommands() {
         commands = new Command[]{
-            new EvalCommand(this),
-            new RestartCommand(this),
-            new TestCommand(this),
-            new UpdateCommand(this)
+            new HelpCommand(this),
+            new InfoCommand(this),
+            new GuildInfoCommand(this),
+            new ProfileCommand(this),
+            new PingCommand(this)
         };
         return this;
     }
+    
 }

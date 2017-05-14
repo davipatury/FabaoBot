@@ -1,4 +1,4 @@
-package net.davipatury.fabaobot.commands;
+package net.davipatury.fabaobot.commands.admin;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -7,8 +7,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import net.davipatury.fabaobot.FabaoBot;
+import net.davipatury.fabaobot.commands.Command;
 import net.davipatury.fabaobot.controllers.MemeController;
 import net.davipatury.fabaobot.modules.Module;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.json.JSONObject;
@@ -62,4 +64,9 @@ public class TestCommand extends Command {
         return true;
     }
     
+    @Override
+    public void helpEmbed(EmbedBuilder ebuilder) {
+        ebuilder.addField("Descrição", "HELP ME!", false);
+        ebuilder.addField("Exemplo", "test", false);
+    }
 }

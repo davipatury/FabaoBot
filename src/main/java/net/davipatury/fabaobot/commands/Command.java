@@ -7,6 +7,7 @@ package net.davipatury.fabaobot.commands;
 
 import net.davipatury.fabaobot.FabaoBot;
 import net.davipatury.fabaobot.modules.Module;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -29,4 +30,5 @@ public abstract class Command {
     public abstract String[] getAliases();
     public abstract Permission[] getPermissions();
     public abstract boolean verifyParameters(final String[] parameters);
+    public abstract void helpEmbed(EmbedBuilder ebuilder);
 }

@@ -25,7 +25,9 @@ public class CommandController {
         public static Module[] generateDefaultModules(CommandController commandController) {
             return new Module[]{
                 new MemeModule(commandController).generateCommands(),
-                new AdminModule(commandController).generateCommands()
+                new AdminModule(commandController).generateCommands(),
+                new MusicModule(commandController).generateCommands(),
+                new MiscModule(commandController).generateCommands()
             };
         }
     }
@@ -68,7 +70,15 @@ public class CommandController {
                     return true;
                 }
                 return false;
-            }).findFirst().get();
+            }).findFirst().orElse(null);
+        } catch (NoSuchElementException e) {
+            return null;
+        }
+    }
+    
+    public Module getModule(String moduleName) {
+        try {
+            return moduleList.stream().filter(module -> module.getName().equalsIgnoreCase(moduleName)).findFirst().orElse(null);
         } catch (NoSuchElementException e) {
             return null;
         }
@@ -95,5 +105,9 @@ public class CommandController {
     
     public PermissionController getPermissionController() {
         return permissionController;
+    }
+    
+    public FabaoBot getBot() {
+        return bot;
     }
 }

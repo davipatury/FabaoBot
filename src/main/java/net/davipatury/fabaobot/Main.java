@@ -26,8 +26,7 @@ public class Main {
             Configuration config = new Configuration("config.json", true, true);
             String token = config.getCategory("bot").getString("bot_token");
             if(token != null) {
-                JDA jda = new JDABuilder(AccountType.BOT).setToken(token).addEventListener(new ReadyListener()).buildAsync();
-                FabaoBot fb = new FabaoBot(jda, config);
+                JDA jda = new JDABuilder(AccountType.BOT).setToken(token).addEventListener(new ReadyListener(config)).buildAsync();
             }
         } catch (LoginException | IllegalArgumentException | RateLimitedException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
