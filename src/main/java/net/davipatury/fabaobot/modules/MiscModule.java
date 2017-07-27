@@ -35,5 +35,4 @@ public class MiscModule extends Module {
         };
         return this;
     }
-    
 }

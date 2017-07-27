@@ -27,7 +27,8 @@ public class CommandController {
                 new MemeModule(commandController).generateCommands(),
                 new AdminModule(commandController).generateCommands(),
                 new MusicModule(commandController).generateCommands(),
-                new MiscModule(commandController).generateCommands()
+                new MiscModule(commandController).generateCommands(),
+                new APIsModule(commandController).generateCommands()
             };
         }
     }
@@ -97,7 +98,7 @@ public class CommandController {
     }
     
     public void processCommand(Command command, String[] parameters, MessageReceivedEvent event) {
-        if(permissionController.canUseCommand(event, command)) {
+        if(permissionController.canUseCommand(event, command) && command.canProcess(event, parameters, bot) && command.getModule().canProcess(event, command, parameters, bot)) {
             bot.getStatistics().increaseCommandsInSession(1);
             command.processCommand(event, parameters, bot);
         }

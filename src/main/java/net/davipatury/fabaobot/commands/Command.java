@@ -20,9 +20,12 @@ public abstract class Command {
     public Command(Module module) {
         this.module = module;
     }
-    
     public Module getModule() {
         return module;
+    }
+    
+    public boolean canProcess(final MessageReceivedEvent event, final String[] parameters, final FabaoBot bot) {
+        return verifyParameters(parameters);
     }
     
     public abstract void processCommand(final MessageReceivedEvent event, final String[] parameters, final FabaoBot bot);

@@ -5,8 +5,10 @@
  */
 package net.davipatury.fabaobot.modules;
 
+import net.davipatury.fabaobot.FabaoBot;
 import net.davipatury.fabaobot.commands.Command;
 import net.davipatury.fabaobot.controllers.CommandController;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.json.JSONObject;
 
 /**
@@ -27,10 +29,15 @@ public abstract class Module {
     public JSONObject customizeOptions(JSONObject options) {
         return null;
     }
-    public Command[] getCommands() {
-        return commands;
-    };
     public JSONObject getConfiguration() {
         return commandController.getPermissionController().getModulesPermissions().getJSONObject(getName().toLowerCase());
+    }
+    
+    public Command[] getCommands() {
+        return commands;
+    }
+    
+    public boolean canProcess(final MessageReceivedEvent event, final Command command, final String[] parameters, final FabaoBot bot) {
+        return true;
     }
 }

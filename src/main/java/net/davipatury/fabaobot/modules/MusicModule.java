@@ -5,9 +5,11 @@
  */
 package net.davipatury.fabaobot.modules;
 
+import net.davipatury.fabaobot.FabaoBot;
 import net.davipatury.fabaobot.commands.music.*;
 import net.davipatury.fabaobot.commands.Command;
 import net.davipatury.fabaobot.controllers.CommandController;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.json.JSONObject;
 
 /**
@@ -36,6 +38,11 @@ public class MusicModule extends Module {
             new RemoveCommand(this)
         };
         return this;
+    }
+    
+    @Override
+    public boolean canProcess(final MessageReceivedEvent event, final Command command, final String[] parameters, final FabaoBot bot) {
+        return event.getGuild() != null;
     }
     
     @Override

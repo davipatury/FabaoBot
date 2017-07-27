@@ -42,6 +42,8 @@ public class Configuration {
                         ).accumulate("music", new JSONObject()
                             .accumulate("youtube_api_key", "1234567890")
                             .accumulate("twitch_client_id", "1234567890")
+                        ).accumulate("apis", new JSONObject()
+                            .accumulate("openweather_appid", "1234567890")
                         );
                     
                     writer.write(newConfig.toString(4));

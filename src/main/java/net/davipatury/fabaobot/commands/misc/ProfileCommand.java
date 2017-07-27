@@ -116,6 +116,11 @@ public class ProfileCommand extends Command {
     public String[] getAliases() {
         return new String[]{"pl"};
     }
+    
+    @Override
+    public boolean canProcess(final MessageReceivedEvent event, final String[] parameters, final FabaoBot bot) {
+        return event.getGuild() != null  && verifyParameters(parameters);
+    }
 
     @Override
     public boolean verifyParameters(String[] parameters) {
